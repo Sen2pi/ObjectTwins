@@ -180,14 +180,14 @@ PortoSessao --> PortoAnalytics : IControleSessão
 @enduml</pre>
     <h2>Explicação Geral</h2>
     <section>
-      <p><strong>Sistema</strong>: «subsystem» ObjectTwins integra-se com Inven!RA via PortoInvenRA, recebendo IConfiguraçãoAtividade e publicando IDadosAnalíticos.</p>
-      <p><strong>Apresentação</strong>: Visualizador3D fornece IVisualização e requer IDadosSimulação e IModelos3D para renderização 3D.</p>
-      <p><strong>Gestão</strong>: GestorSessão fornece IControleSessão e IGestãoUtilizador e requer IAutenticaçãoInvenRA. GestorAnalytics fornece IMétricasQuantitativas e IRelatóriosQualitativos, requer IDadosSessão, IDadosSimulação e IDadosExportação e publica IDadosAnalíticos.</p>
-      <p><strong>Criação e Configuração</strong>: CriadorObjetos fornece ICriaçãoObjetos e IModelagem3D e requer IDadosMateriais do GestorMateriais, que fornece IBaseDadosMateriais e IPropriedadesFísicas.</p>
-      <p><strong>Simulação e Análise</strong>: MotorSimulação fornece ISimulaçãoFísica e IConfiguraçãoAmbiente e requer IDadosObjetos e IPropriedadesMateriais. DetetorColisões fornece IDeteçãoColisões e ICálculoDanos e requer IEstadoSimulação e IPropriedadesObjetos. AnalisadorResultados fornece IAnáliseDesempenho e IEstatísticas e requer IDadosColisões e IResultadosSimulação.</p>
-      <p><strong>Exportação</strong>: ExportadorDados fornece IExportaçãoCSV e IExportaçãoJSON e requer IResultadosAnálise do AnalisadorResultados.</p>
+      <p><strong><a href="wiki.html#sistema"></a>Sistema</a></strong>: «subsystem» ObjectTwins integra-se com Inven!RA via PortoInvenRA, recebendo IConfiguraçãoAtividade e publicando IDadosAnalíticos.</p>
+      <p><strong><a href="wiki.html#apresentacao">Apresentação</a></strong>: Visualizador3D fornece IVisualização e requer IDadosSimulação e IModelos3D para renderização 3D.</p>
+      <p><strong><a href="wiki.html#gestao">Gestão</a></strong>: GestorSessão fornece IControleSessão e IGestãoUtilizador e requer IAutenticaçãoInvenRA. GestorAnalytics fornece IMétricasQuantitativas e IRelatóriosQualitativos, requer IDadosSessão, IDadosSimulação e IDadosExportação e publica IDadosAnalíticos.</p>
+      <p><strong><a href="wiki.html#criacao">Criação e Configuração</a></strong>: CriadorObjetos fornece ICriaçãoObjetos e IModelagem3D e requer IDadosMateriais do GestorMateriais, que fornece IBaseDadosMateriais e IPropriedadesFísicas.</p>
+      <p><strong><a href="wiki.html#simulacao">Simulação e Análise</a></strong>: MotorSimulação fornece ISimulaçãoFísica e IConfiguraçãoAmbiente e requer IDadosObjetos e IPropriedadesMateriais. DetetorColisões fornece IDeteçãoColisões e ICálculoDanos e requer IEstadoSimulação e IPropriedadesObjetos. AnalisadorResultados fornece IAnáliseDesempenho e IEstatísticas e requer IDadosColisões e IResultadosSimulação.</p>
+      <p><strong><a href="wiki.html#exportacao">Exportação</a></strong>: ExportadorDados fornece IExportaçãoCSV e IExportaçãoJSON e requer IResultadosAnálise do AnalisadorResultados.</p>
       <p><strong>Controlo</strong>: IControleSessão é distribuído a todos os portos (UI, Simulação, Colisões, Criação, Materiais, Análise, Exportação, Analytics) garantindo governança central.</p>
-      <p><strong>Legibilidade</strong>: Layout vertical (A4) com espaçamento aumentado (`nodesep`, `ranksep`), nomes PT-PT e ligações diretas para minimizar cruzamentos; setas com direções explícitas onde necessário.</p>
+      <p><strong>Legibilidade</strong>: Layout vertical (A4) com espaçamento aumentado (nodesep, ranksep), nomes PT-PT e ligações diretas para minimizar cruzamentos; setas com direções explícitas onde necessário.</p>
     </section>
   </main>
   <script src="https://unpkg.com/plantuml-encoder/dist/plantuml-encoder.min.js"></script>

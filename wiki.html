@@ -20,6 +20,31 @@
 <body>
   <header>Wiki — ObjectTwins Activity Provider</header>
   <main>
+    <section class="section" id="sistema">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» ObjectTwins" as ObjectTwinsSystem {
+  port PortoInvenRA
+}
+component "Inven!RA" as InvenRA
+interface IDadosAnalíticos
+interface IConfiguraçãoAtividade
+PortoInvenRA --> InvenRA : IConfiguraçãoAtividade
+InvenRA --> PortoInvenRA : IConfiguraçãoAtividade
+ObjectTwinsSystem .. IDadosAnalíticos
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Sistema ObjectTwins">
+        <div class="desc">
+          <h2>Sistema</h2>
+          <p>O sistema «subsystem» ObjectTwins comunica com Inven!RA através de PortoInvenRA. Recebe IConfiguraçãoAtividade e publica IDadosAnalíticos.</p>
+        </div>
+      </div>
+    </section>
     <section class="section" id="apresentacao">
       <div class="code">
         <pre>@startuml
