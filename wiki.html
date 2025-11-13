@@ -25,16 +25,16 @@
         <pre>@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
-top to bottom direction
-component "«subsystem» ObjectTwins" as ObjectTwinsSystem {
-  port PortoInvenRA
-}
-component "Inven!RA" as InvenRA
-interface IDadosAnalíticos
-interface IConfiguraçãoAtividade
-PortoInvenRA --> InvenRA : IConfiguraçãoAtividade
-InvenRA --> PortoInvenRA : IConfiguraçãoAtividade
-ObjectTwinsSystem .. IDadosAnalíticos
+left to right direction
+component "«subsystem» ObjectTwins" as ObjectTwinsSystem { port PortoInvenRA }
+note right of PortoInvenRA : Canal externo para Inven!RA
+component "Inven!RA" as InvenRA { interface IAutenticaçãoInvenRA }
+note right of IAutenticaçãoInvenRA : Autenticação com Inven!RA
+component "GestorAnalytics" as GestorAnalytics { interface IDadosAnalíticos }
+note right of IDadosAnalíticos : Dados analíticos
+PortoInvenRA -left-0 IDadosAnalíticos
+InvenRA ..> IConfiguraçãoAtividade
+GestorAnalytics --> PortoInvenRA : [delegate] IDadosAnalíticos
 @enduml</pre>
       </div>
       <div class="right">
@@ -50,16 +50,16 @@ ObjectTwinsSystem .. IDadosAnalíticos
         <pre>@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
-top to bottom direction
+left to right direction
 component "«subsystem» Camada de Apresentação" as SubApresentacao #E8F1FF {
-  component "«component» Visualizador3D" as Visualizador3D #90CAF9
+  component "«component» Visualizador3D" as Visualizador3D #90CAF9 {
+    port PortoUI
+    note right of PortoUI : Interação e renderização UI
+    interface IVisualização
+    note right of IVisualização : Interface de visualização 3D
+  }
 }
-interface IVisualização
-interface IDadosSimulação
-interface IModelos3D
-Visualizador3D - IVisualização
-Visualizador3D ..> IDadosSimulação
-Visualizador3D ..> IModelos3D
+Visualizador3D -left-0 IVisualização
 @enduml</pre>
       </div>
       <div class="right">
@@ -76,29 +76,30 @@ Visualizador3D ..> IModelos3D
         <pre>@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
-top to bottom direction
+left to right direction
 component "«subsystem» Camada de Gestão" as SubGestao #E8F5E9 {
-  component "«component» GestorSessão" as GestorSessao #A5D6A7
-  component "«component» GestorAnalytics" as GestorAnalytics #A5D6A7
+  component "«component» GestorSessão" as GestorSessao #A5D6A7 {
+    interface IControleSessão
+    note right of IControleSessão : Controlo de sessão
+    interface IGestãoUtilizador
+    note right of IGestãoUtilizador : Gestão de utilizador
+    interface IDadosSessão
+    note right of IDadosSessão : Dados da sessão
+  }
+  component "«component» GestorAnalytics" as GestorAnalytics #A5D6A7 {
+    interface IMétricasQuantitativas
+    note right of IMétricasQuantitativas : Métricas quantitativas
+    interface IRelatóriosQualitativos
+    note right of IRelatóriosQualitativos : Relatórios qualitativos
+    interface IDadosAnalíticos
+    note right of IDadosAnalíticos : Dados analíticos
+  }
 }
-interface IControleSessão
-interface IGestãoUtilizador
-interface IAutenticaçãoInvenRA
-interface IMétricasQuantitativas
-interface IRelatóriosQualitativos
-interface IDadosSessão
-interface IDadosSimulação
-interface IDadosExportação
-interface IDadosAnalíticos
 GestorSessao - IControleSessão
 GestorSessao - IGestãoUtilizador
-GestorSessao ..> IAutenticaçãoInvenRA
-GestorAnalytics - IMétricasQuantitativas
-GestorAnalytics - IRelatóriosQualitativos
-GestorAnalytics - IDadosAnalíticos
-GestorAnalytics ..> IDadosSessão
-GestorAnalytics ..> IDadosSimulação
-GestorAnalytics ..> IDadosExportação
+GestorAnalytics -left-0 IMétricasQuantitativas
+GestorAnalytics -left-0 IRelatóriosQualitativos
+GestorAnalytics -left-0 IDadosAnalíticos
 @enduml</pre>
       </div>
       <div class="right">
@@ -115,21 +116,34 @@ GestorAnalytics ..> IDadosExportação
         <pre>@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
-top to bottom direction
+left to right direction
 component "«subsystem» Camada de Criação e Configuração" as SubCriacao #FFF3E0 {
-  component "«component» CriadorObjetos" as CriadorObjetos #FFCC80
-  component "«component» GestorMateriais" as GestorMateriais #FFCC80
+  component "«component» CriadorObjetos" as CriadorObjetos #FFCC80 {
+    interface ICriaçãoObjetos
+    note right of ICriaçãoObjetos : Criação de objetos
+    interface IModelagem3D
+    note right of IModelagem3D : Modelagem 3D
+    interface IDadosObjetos
+    note right of IDadosObjetos : Dados de objetos
+    interface IPropriedadesObjetos
+    note right of IPropriedadesObjetos : Propriedades dos objetos
+  }
+  component "«component» GestorMateriais" as GestorMateriais #FFCC80 {
+    interface IBaseDadosMateriais
+    note right of IBaseDadosMateriais : Base de dados de materiais
+    interface IPropriedadesFísicas
+    note right of IPropriedadesFísicas : Propriedades físicas
+    interface IDadosMateriais
+    note right of IDadosMateriais : Dados de materiais
+    interface IPropriedadesMateriais
+    note right of IPropriedadesMateriais : Propriedades de materiais
+  }
 }
-interface ICriaçãoObjetos
-interface IModelagem3D
-interface IDadosMateriais
-interface IBaseDadosMateriais
-interface IPropriedadesFísicas
-CriadorObjetos - ICriaçãoObjetos
-CriadorObjetos - IModelagem3D
+CriadorObjetos -left-0 ICriaçãoObjetos
+CriadorObjetos -left-0 IModelagem3D
+GestorMateriais -left-0 IBaseDadosMateriais
+GestorMateriais -left-0 IPropriedadesFísicas
 CriadorObjetos ..> IDadosMateriais
-GestorMateriais - IBaseDadosMateriais
-GestorMateriais - IPropriedadesFísicas
 @enduml</pre>
       </div>
       <div class="right">
@@ -146,36 +160,43 @@ GestorMateriais - IPropriedadesFísicas
         <pre>@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
-top to bottom direction
+left to right direction
 component "«subsystem» Camada de Simulação e Análise" as SubSimulacao #F3E5F5 {
-  component "«component» MotorSimulação" as MotorSimulacao #CE93D8
-  component "«component» Detetor Colisões" as DetetorColisoes #CE93D8
-  component "«component» AnalisadorResultados" as AnalisadorResultados #CE93D8
+  component "«component» MotorSimulação" as MotorSimulacao #CE93D8 {
+    interface ISimulaçãoFísica
+    note right of ISimulaçãoFísica : Simulação física
+    interface IConfiguraçãoAmbiente
+    note right of IConfiguraçãoAmbiente : Configuração de ambiente
+    interface IDadosSimulação
+    note right of IDadosSimulação : Dados da simulação
+    interface IResultadosSimulação
+    note right of IResultadosSimulação : Resultados da simulação
+    interface IEstadoSimulação
+    note right of IEstadoSimulação : Estado da simulação
+  }
+  component "«component» Detetor Colisões" as DetetorColisoes #CE93D8 {
+    interface IDeteçãoColisões
+    note right of IDeteçãoColisões : Deteção de colisões
+    interface ICálculoDanos
+    note right of ICálculoDanos : Cálculo de danos
+    interface IDadosColisões
+    note right of IDadosColisões : Dados de colisões
+  }
+  component "«component» AnalisadorResultados" as AnalisadorResultados #CE93D8 {
+    interface IAnáliseDesempenho
+    note right of IAnáliseDesempenho : Análise de desempenho
+    interface IEstatísticas
+    note right of IEstatísticas : Estatísticas
+    interface IResultadosAnálise
+    note right of IResultadosAnálise : Resultados de análise
+  }
 }
-interface ISimulaçãoFísica
-interface IConfiguraçãoAmbiente
-interface IDadosObjetos
-interface IPropriedadesMateriais
-interface IDeteçãoColisões
-interface ICálculoDanos
-interface IEstadoSimulação
-interface IPropriedadesObjetos
-interface IAnáliseDesempenho
-interface IEstatísticas
-interface IDadosColisões
-interface IResultadosSimulação
-MotorSimulacao - ISimulaçãoFísica
-MotorSimulacao - IConfiguraçãoAmbiente
-MotorSimulacao ..> IDadosObjetos
-MotorSimulacao ..> IPropriedadesMateriais
-DetetorColisoes - IDeteçãoColisões
-DetetorColisoes - ICálculoDanos
-DetetorColisoes ..> IEstadoSimulação
-DetetorColisoes ..> IPropriedadesObjetos
-AnalisadorResultados - IAnáliseDesempenho
-AnalisadorResultados - IEstatísticas
-AnalisadorResultados ..> IDadosColisões
-AnalisadorResultados ..> IResultadosSimulação
+MotorSimulacao -left-0 ISimulaçãoFísica
+MotorSimulacao -left-0 IConfiguraçãoAmbiente
+DetetorColisoes -left-0 IDeteçãoColisões
+DetetorColisoes -left-0 ICálculoDanos
+AnalisadorResultados -left-0 IAnáliseDesempenho
+AnalisadorResultados -left-0 IEstatísticas
 @enduml</pre>
       </div>
       <div class="right">
@@ -194,14 +215,17 @@ skinparam componentStyle uml2
 skinparam defaultTextAlignment center
 top to bottom direction
 component "«subsystem» Camada de Exportação" as SubExportacao #E0F2F1 {
-  component "«component» ExportadorDados" as ExportadorDados #80CBC4
+  component "«component» ExportadorDados" as ExportadorDados #80CBC4 {
+    interface IExportaçãoCSV
+    note right of IExportaçãoCSV : Exportação em CSV
+    interface IExportaçãoJSON
+    note right of IExportaçãoJSON : Exportação em JSON
+    interface IDadosExportação
+    note right of IDadosExportação : Dados de exportação
+  }
 }
-interface IExportaçãoCSV
-interface IExportaçãoJSON
-interface IResultadosAnálise
-ExportadorDados - IExportaçãoCSV
-ExportadorDados - IExportaçãoJSON
-ExportadorDados ..> IResultadosAnálise
+ExportadorDados -left-0 IExportaçãoCSV
+ExportadorDados -left-0 IExportaçãoJSON
 @enduml</pre>
       </div>
       <div class="right">
