@@ -27,13 +27,17 @@ skinparam componentStyle uml2
 skinparam defaultTextAlignment center
 left to right direction
 component "«subsystem» ObjectTwins" as ObjectTwinsSystem { port PortoInvenRA }
-note right of PortoInvenRA : Canal externo para Inven!RA
-component "Inven!RA" as InvenRA { interface IAutenticaçãoInvenRA }
+note right of ObjectTwinsSystem : PortoInvenRA — Canal externo para Inven!RA
+component "Inven!RA" as InvenRA
 note right of IAutenticaçãoInvenRA : Autenticação com Inven!RA
-component "GestorAnalytics" as GestorAnalytics { interface IDadosAnalíticos }
+component "GestorAnalytics" as GestorAnalytics
 note right of IDadosAnalíticos : Dados analíticos
-PortoInvenRA -left-0 IDadosAnalíticos
+interface IAutenticaçãoInvenRA
+InvenRA -left-0 IAutenticaçãoInvenRA
+interface IConfiguraçãoAtividade
 InvenRA ..> IConfiguraçãoAtividade
+interface IDadosAnalíticos
+GestorAnalytics -left-0 IDadosAnalíticos
 GestorAnalytics --> PortoInvenRA : [delegate] IDadosAnalíticos
 @enduml</pre>
       </div>
