@@ -1,29 +1,9 @@
-<!doctype html>
-<html lang="pt-PT">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Diagrama de Componentes — ObjectTwins</title>
-  <style>
-    body { font-family: Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; }
-    header { padding: 12px 16px; background: #0b5cff; color: #fff; }
-    main { padding: 16px; }
-    #diagram { width: 100%; border: 0; }
-    pre { background: #f5f7fb; padding: 12px; overflow: auto; }
-  </style>
-</head>
-<body>
-  <header>Diagrama de Componentes — ObjectTwins Activity Provider</header>
-  <main>
-    <img id="diagram" src="" alt="Diagrama de Componentes ObjectTwins" style="width:100%; height:auto; border:0" referrerpolicy="no-referrer" loading="eager">
-    <div id="fallback" style="margin-top:12px"></div>
-    <h2>Código PlantUML</h2>
-    <pre id="puml" style="white-space: pre-wrap">@startuml
+@startuml
 skinparam componentStyle uml2
 skinparam defaultTextAlignment center
 skinparam shadowing false
-skinparam nodesep 35
-skinparam ranksep 70
+skinparam nodesep 30
+skinparam ranksep 50
 top to bottom direction
 scale 1024x1448
 
@@ -177,48 +157,4 @@ PortoSessao --> PortoAnalise : IControleSessão
 PortoSessao --> PortoExportacao : IControleSessão
 PortoSessao --> PortoAnalytics : IControleSessão
 
-@enduml</pre>
-    <h2>Explicação Geral</h2>
-    <section>
-      <p><strong>Sistema</strong>: «subsystem» ObjectTwins integra-se com Inven!RA via PortoInvenRA, recebendo IConfiguraçãoAtividade e publicando IDadosAnalíticos.</p>
-      <p><strong>Apresentação</strong>: Visualizador3D fornece IVisualização e requer IDadosSimulação e IModelos3D para renderização 3D.</p>
-      <p><strong>Gestão</strong>: GestorSessão fornece IControleSessão e IGestãoUtilizador e requer IAutenticaçãoInvenRA. GestorAnalytics fornece IMétricasQuantitativas e IRelatóriosQualitativos, requer IDadosSessão, IDadosSimulação e IDadosExportação e publica IDadosAnalíticos.</p>
-      <p><strong>Criação e Configuração</strong>: CriadorObjetos fornece ICriaçãoObjetos e IModelagem3D e requer IDadosMateriais do GestorMateriais, que fornece IBaseDadosMateriais e IPropriedadesFísicas.</p>
-      <p><strong>Simulação e Análise</strong>: MotorSimulação fornece ISimulaçãoFísica e IConfiguraçãoAmbiente e requer IDadosObjetos e IPropriedadesMateriais. DetetorColisões fornece IDeteçãoColisões e ICálculoDanos e requer IEstadoSimulação e IPropriedadesObjetos. AnalisadorResultados fornece IAnáliseDesempenho e IEstatísticas e requer IDadosColisões e IResultadosSimulação.</p>
-      <p><strong>Exportação</strong>: ExportadorDados fornece IExportaçãoCSV e IExportaçãoJSON e requer IResultadosAnálise do AnalisadorResultados.</p>
-      <p><strong>Controlo</strong>: IControleSessão é distribuído a todos os portos (UI, Simulação, Colisões, Criação, Materiais, Análise, Exportação, Analytics) garantindo governança central.</p>
-      <p><strong>Legibilidade</strong>: Layout vertical (A4) com espaçamento aumentado (`nodesep`, `ranksep`), nomes PT-PT e ligações diretas para minimizar cruzamentos; setas com direções explícitas onde necessário.</p>
-    </section>
-  </main>
-  <script src="https://unpkg.com/plantuml-encoder/dist/plantuml-encoder.min.js"></script>
-  <script>
-    const src = document.getElementById('puml').textContent.trim();
-    const encoded = window.plantumlEncoder.encode(src);
-    const img = document.getElementById('diagram');
-    const endpoints = [
-      'https://kroki.io/plantuml/png/',
-      'https://kroki.io/plantuml/svg/',
-      'https://www.plantuml.com/plantuml/png/',
-      'https://www.plantuml.com/plantuml/svg/',
-      'https://plantuml.online/uml/'
-    ];
-    let i = 0;
-    function tryNext() {
-      if (i >= endpoints.length) {
-        const f = document.getElementById('fallback');
-        const u1 = endpoints[0] + encoded;
-        const u2 = endpoints[2] + encoded;
-        const u3 = endpoints[4] + encoded;
-        f.innerHTML = 'Não foi possível carregar automaticamente. Abra manualmente: ' +
-          '<a href="' + u3 + '" target="_blank" rel="noopener">PlantUML Online</a>, ' +
-          '<a href="' + u1 + '" target="_blank" rel="noopener">Kroki PNG</a> ou ' +
-          '<a href="' + u2 + '" target="_blank" rel="noopener">PlantUML PNG</a>';
-        return;
-      }
-      img.src = endpoints[i] + encoded;
-      img.onerror = function () { i++; tryNext(); };
-    }
-    tryNext();
-  </script>
-</body>
-</html>
+@enduml

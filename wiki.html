@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wiki — ObjectTwins: Subsistemas</title>
+  <style>
+    body { font-family: Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+    header { padding: 12px 16px; background: #0b5cff; color: #fff; }
+    main { padding: 16px; display: grid; gap: 24px; }
+    .section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .code { background: #f5f7fb; padding: 12px; overflow: auto; }
+    .right { display: grid; gap: 12px; }
+    .right img { width: 100%; height: auto; border: 0; }
+    .desc { background: #fff; border: 1px solid #e5e7ef; padding: 12px; }
+    h2 { margin: 8px 0; }
+    @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>Wiki — ObjectTwins Activity Provider</header>
+  <main>
+    <section class="section" id="apresentacao">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» Camada de Apresentação" as SubApresentacao #E8F1FF {
+  component "«component» Visualizador3D" as Visualizador3D #90CAF9
+}
+interface IVisualização
+interface IDadosSimulação
+interface IModelos3D
+Visualizador3D - IVisualização
+Visualizador3D ..> IDadosSimulação
+Visualizador3D ..> IModelos3D
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Camada de Apresentação">
+        <div class="desc">
+          <h2>Camada de Apresentação</h2>
+          <p>Renderiza modelos 3D e o estado da simulação em tempo real. Fornece IVisualização e requer IDadosSimulação e IModelos3D.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gestao">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» Camada de Gestão" as SubGestao #E8F5E9 {
+  component "«component» GestorSessão" as GestorSessao #A5D6A7
+  component "«component» GestorAnalytics" as GestorAnalytics #A5D6A7
+}
+interface IControleSessão
+interface IGestãoUtilizador
+interface IAutenticaçãoInvenRA
+interface IMétricasQuantitativas
+interface IRelatóriosQualitativos
+interface IDadosSessão
+interface IDadosSimulação
+interface IDadosExportação
+interface IDadosAnalíticos
+GestorSessao - IControleSessão
+GestorSessao - IGestãoUtilizador
+GestorSessao ..> IAutenticaçãoInvenRA
+GestorAnalytics - IMétricasQuantitativas
+GestorAnalytics - IRelatóriosQualitativos
+GestorAnalytics - IDadosAnalíticos
+GestorAnalytics ..> IDadosSessão
+GestorAnalytics ..> IDadosSimulação
+GestorAnalytics ..> IDadosExportação
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Camada de Gestão">
+        <div class="desc">
+          <h2>Camada de Gestão</h2>
+          <p>Orquestra sessões e utilizadores, expõe controlo e recolhe/produz analítica. Publica IDadosAnalíticos para o exterior.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="criacao">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» Camada de Criação e Configuração" as SubCriacao #FFF3E0 {
+  component "«component» CriadorObjetos" as CriadorObjetos #FFCC80
+  component "«component» GestorMateriais" as GestorMateriais #FFCC80
+}
+interface ICriaçãoObjetos
+interface IModelagem3D
+interface IDadosMateriais
+interface IBaseDadosMateriais
+interface IPropriedadesFísicas
+CriadorObjetos - ICriaçãoObjetos
+CriadorObjetos - IModelagem3D
+CriadorObjetos ..> IDadosMateriais
+GestorMateriais - IBaseDadosMateriais
+GestorMateriais - IPropriedadesFísicas
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Camada de Criação e Configuração">
+        <div class="desc">
+          <h2>Criação e Configuração</h2>
+          <p>Cria objetos e modelos 3D com base em materiais. GestorMateriais fornece o catálogo e propriedades físicas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="simulacao">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» Camada de Simulação e Análise" as SubSimulacao #F3E5F5 {
+  component "«component» MotorSimulação" as MotorSimulacao #CE93D8
+  component "«component» Detetor Colisões" as DetetorColisoes #CE93D8
+  component "«component» AnalisadorResultados" as AnalisadorResultados #CE93D8
+}
+interface ISimulaçãoFísica
+interface IConfiguraçãoAmbiente
+interface IDadosObjetos
+interface IPropriedadesMateriais
+interface IDeteçãoColisões
+interface ICálculoDanos
+interface IEstadoSimulação
+interface IPropriedadesObjetos
+interface IAnáliseDesempenho
+interface IEstatísticas
+interface IDadosColisões
+interface IResultadosSimulação
+MotorSimulacao - ISimulaçãoFísica
+MotorSimulacao - IConfiguraçãoAmbiente
+MotorSimulacao ..> IDadosObjetos
+MotorSimulacao ..> IPropriedadesMateriais
+DetetorColisoes - IDeteçãoColisões
+DetetorColisoes - ICálculoDanos
+DetetorColisoes ..> IEstadoSimulação
+DetetorColisoes ..> IPropriedadesObjetos
+AnalisadorResultados - IAnáliseDesempenho
+AnalisadorResultados - IEstatísticas
+AnalisadorResultados ..> IDadosColisões
+AnalisadorResultados ..> IResultadosSimulação
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Camada de Simulação e Análise">
+        <div class="desc">
+          <h2>Simulação e Análise</h2>
+          <p>Executa a simulação física, deteta colisões e calcula danos, gerando análises e estatísticas dos resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="exportacao">
+      <div class="code">
+        <pre>@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+top to bottom direction
+component "«subsystem» Camada de Exportação" as SubExportacao #E0F2F1 {
+  component "«component» ExportadorDados" as ExportadorDados #80CBC4
+}
+interface IExportaçãoCSV
+interface IExportaçãoJSON
+interface IResultadosAnálise
+ExportadorDados - IExportaçãoCSV
+ExportadorDados - IExportaçãoJSON
+ExportadorDados ..> IResultadosAnálise
+@enduml</pre>
+      </div>
+      <div class="right">
+        <img alt="Camada de Exportação">
+        <div class="desc">
+          <h2>Exportação</h2>
+          <p>Exporta resultados de análise em formatos CSV e JSON para integração e partilha externa.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/plantuml-encoder/dist/plantuml-encoder.min.js"></script>
+  <script>
+    document.querySelectorAll('.section').forEach(sec => {
+      const pre = sec.querySelector('pre');
+      const img = sec.querySelector('img');
+      const encoded = window.plantumlEncoder.encode(pre.textContent.trim());
+      const tryEndpoints = [
+        'https://kroki.io/plantuml/png/',
+        'https://www.plantuml.com/plantuml/png/',
+        'https://plantuml.online/uml/'
+      ];
+      let i = 0;
+      function setNext(){
+        if(i>=tryEndpoints.length){
+          img.alt += ' (abrir manualmente)';
+          return;
+        }
+        img.src = tryEndpoints[i] + encoded;
+        img.onerror = function(){ i++; setNext(); };
+      }
+      setNext();
+    });
+  </script>
+</body>
+</html>
