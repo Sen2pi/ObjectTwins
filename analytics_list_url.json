@@ -1,0 +1,131 @@
+{
+  "session_metadata": {
+    "name": "session_metadata",
+    "type": "object",
+    "user_id_inven_ra": "string",
+    "activity_instance_id": "string",
+    "session_start_timestamp": "ISO8601",
+    "session_end_timestamp": "ISO8601",
+    "duration_minutes": "number"
+  },
+  "quantitativos": {
+    "total_objects_created": {
+      "name": "total_objects_created",
+      "type": "integer",
+      "value": "integer",
+      "description": "Número total de twins criados na sessão"
+    },
+    "objects_by_material_category": {
+      "name": "objects_by_material_category",
+      "type": "object",
+      "properties": {
+        "steel": "integer",
+        "wood": "integer",
+        "rubber": "integer",
+        "composite": "integer"
+      }
+    },
+    "total_simulations_executed": {
+      "name": "total_simulations_executed",
+      "type": "integer",
+      "value": "integer"
+    },
+    "average_simulation_duration_seconds": {
+      "name": "average_simulation_duration_seconds",
+      "type": "number",
+      "value": "number",
+      "unit": "seconds"
+    },
+    "total_collision_events_registered": {
+      "name": "total_collision_events_registered",
+      "type": "integer",
+      "value": "integer"
+    },
+    "average_damage_percentage": {
+      "name": "average_damage_percentage",
+      "type": "number",
+      "value": "number",
+      "unit": "%",
+      "description": "Degradação média nos twins por simulação"
+    },
+    "parameter_variance": {
+      "name": "parameter_variance",
+      "type": "object",
+      "gravity_range_applied": ["min_value", "max_value"],
+      "friction_range_applied": ["min_value", "max_value"],
+      "time_scale_variations_count": "integer"
+    },
+    "materials_resistance_ranking": {
+      "name": "materials_resistance_ranking",
+      "type": "array",
+      "items": {
+        "material": "string",
+        "avg_damage_received": "number",
+        "simulation_count": "integer",
+        "resistance_score": "number"
+      }
+    }
+  },
+  "qualitativos": {
+    "individual_simulation_reports": {
+      "name": "individual_simulation_reports",
+      "type": "array",
+      "items": {
+        "simulation_id": "string",
+        "timestamp": "ISO8601",
+        "objects_involved": [
+          {
+            "object_id": "string",
+            "primary_material": "string",
+            "secondary_materials_percentage": "object",
+            "initial_integrity": "number"
+          }
+        ],
+        "collision_sequence": [
+          {
+            "event_id": "integer",
+            "collision_timestamp": "number",
+            "objects_colliding": ["object_id_1", "object_id_2"],
+            "damage_inflicted": {
+              "object_id_1": "number",
+              "object_id_2": "number"
+            }
+          }
+        ],
+        "final_status": {
+          "surviving_objects": ["object_id"],
+          "destroyed_objects": ["object_id"],
+          "total_damage_accumulated": "number"
+        },
+        "material_performance_analysis": "string"
+      }
+    },
+    "most_resistant_material_combination": {
+      "name": "most_resistant_material_combination",
+      "type": "object",
+      "primary_material": "string",
+      "secondary_materials": "object",
+      "avg_damage_threshold": "number",
+      "simulations_tested": "integer",
+      "recommendation": "string"
+    },
+    "design_patterns_identified": {
+      "name": "design_patterns_identified",
+      "type": "array",
+      "items": {
+        "pattern_id": "string",
+        "pattern_description": "string",
+        "frequency": "integer",
+        "example_objects": ["object_id"]
+      }
+    },
+    "data_extraction_for_research": {
+      "name": "data_extraction_for_research",
+      "type": "object",
+      "dataset_filename": "string",
+      "records_count": "integer",
+      "variables_tracked": ["velocity", "acceleration", "collision_force", "material_degradation", "trajectory"],
+      "potential_research_applications": ["materials_engineering", "impact_dynamics", "design_optimization"]
+    }
+  }
+}

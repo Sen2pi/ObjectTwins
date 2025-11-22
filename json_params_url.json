@@ -1,0 +1,138 @@
+{
+  "activity_id": "objecttwins_v1",
+  "environment_config": {
+    "gravity": {
+      "name": "gravity",
+      "type": "number",
+      "value": 9.8,
+      "unit": "m/s²",
+      "editable": true,
+      "description": "Aceleração gravitacional do ambiente"
+    },
+    "friction_coefficient": {
+      "name": "friction_coefficient",
+      "type": "number",
+      "value": 0.3,
+      "editable": true,
+      "range": [0, 1]
+    },
+    "time_scale": {
+      "name": "time_scale",
+      "type": "number",
+      "value": 1.0,
+      "editable": true,
+      "presets": ["0.5", "1.0", "2.0", "4.0"]
+    },
+    "max_simulation_time": {
+      "name": "max_simulation_time",
+      "type": "integer",
+      "value": 300,
+      "unit": "seconds"
+    }
+  },
+  "object_creation": {
+    "allowed_primitives": {
+      "name": "allowed_primitives",
+      "type": "array",
+      "items": ["cube", "sphere", "cylinder", "custom_3d"]
+    },
+    "max_objects_per_session": {
+      "name": "max_objects_per_session",
+      "type": "integer",
+      "value": 20
+    },
+    "allow_3d_import": {
+      "name": "allow_3d_import",
+      "type": "boolean",
+      "value": true
+    },
+    "supported_formats": {
+      "name": "supported_formats",
+      "type": "array",
+      "items": ["gltf", "obj", "fbx"]
+    }
+  },
+  "materials_database": {
+    "enabled": {
+      "name": "enabled",
+      "type": "boolean",
+      "value": true
+    },
+    "predefined_materials": {
+      "name": "predefined_materials",
+      "type": "array",
+      "items": [
+        {
+          "name": "pencil",
+          "composition": {"wood": 0.37, "carbon": 0.60, "rubber": 0.03},
+          "density": 1.8,
+          "elasticity": 0.4,
+          "resistance_mpa": 50
+        },
+        {
+          "name": "steel",
+          "composition": {"iron": 0.98, "carbon": 0.02},
+          "density": 7.85,
+          "elasticity": 0.3,
+          "resistance_mpa": 400
+        },
+        {
+          "name": "rubber",
+          "composition": {"natural_rubber": 0.85, "sulfur": 0.15},
+          "density": 0.92,
+          "elasticity": 0.9,
+          "resistance_mpa": 10
+        }
+      ]
+    },
+    "allow_custom_composition": {
+      "name": "allow_custom_composition",
+      "type": "boolean",
+      "value": true
+    }
+  },
+  "collision_simulation": {
+    "enabled": {
+      "name": "enabled",
+      "type": "boolean",
+      "value": true
+    },
+    "damage_model": {
+      "name": "damage_model",
+      "type": "string",
+      "value": "linear_degradation"
+    },
+    "collision_detection_frequency": {
+      "name": "collision_detection_frequency",
+      "type": "integer",
+      "value": 60
+    },
+    "record_collision_events": {
+      "name": "record_collision_events",
+      "type": "boolean",
+      "value": true
+    }
+  },
+  "data_export": {
+    "enabled": {
+      "name": "enabled",
+      "type": "boolean",
+      "value": true
+    },
+    "formats": {
+      "name": "formats",
+      "type": "array",
+      "items": ["csv", "json"]
+    },
+    "include_trajectories": {
+      "name": "include_trajectories",
+      "type": "boolean",
+      "value": true
+    },
+    "include_collision_log": {
+      "name": "include_collision_log",
+      "type": "boolean",
+      "value": true
+    }
+  }
+}
