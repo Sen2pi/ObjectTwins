@@ -6,6 +6,7 @@ import path from "path";
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const analyticsListPath = process.env.ANALYTICS_LIST_PATH || path.join(process.cwd(), "analytics_list_url.json");
 const jsonParamsPath = process.env.JSON_PARAMS_PATH || path.join(process.cwd(), "json_params_url.json");
@@ -145,6 +146,29 @@ app.get("/analytics-list", (req, res) => {
   } catch (e) {
     res.status(500).json({ error: "analytics_list_url.json not found" });
   }
+});
+
+app.get("/", (req, res) => {
+  const base = `${req.protocol}://${req.get("host")}`;
+  const html = `
+<div>
+  <h2>Hello World - ObjetTwins Webservice URL Test</h2>
+  <ul>
+    <li><a href="${base}/config">/config</a></li>
+    <li><a href="${base}/json-params">/json-params</a></li>
+    <li><a href="${base}/analytics-list">/analytics-list</a></li>
+    <li><a href="${base}/deploy?activityID=demo123">/deploy?activityID=demo123</a></li>
+    <li><a href="${base}/user?activityID=demo123">/user?activityID=demo123</a></li>
+    <li><a href="${base}/analytics/page?APAnID=11111111">/analytics/page?APAnID=11111111</a></li>
+  </ul>
+  <h3>Testar Analytics (POST)</h3>
+  <form method="post" action="${base}/analytics" style="display:flex;gap:8px;align-items:center;">
+    <input type="text" name="activityID" value="demo123" />
+    <button type="submit">Enviar</button>
+  </form>
+  <p>Nota: também pode enviar JSON {"activityID":"..."} com um cliente HTTP.</p>
+</div>`;
+  res.type("text/html").send(html);
 });
 
 app.get("/analytics/page", (req, res) => {
