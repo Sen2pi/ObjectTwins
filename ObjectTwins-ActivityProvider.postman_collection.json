@@ -10,7 +10,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/config", "host": ["{{baseUrl}}"], "path": ["config"] }
+        "url": { "raw": "https://objecttwins.onrender.com/config", "host": ["https://objecttwins.onrender.com"], "path": ["config"] }
       },
       "event": [
         {
@@ -31,7 +31,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/json_params", "host": ["{{baseUrl}}"], "path": ["json_params"] }
+        "url": { "raw": "https://objecttwins.onrender.com/json_params", "host": ["https://objecttwins.onrender.com"], "path": ["json_params"] }
       },
       "event": [
         {
@@ -51,7 +51,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/analytics_list", "host": ["{{baseUrl}}"], "path": ["analytics_list"] }
+        "url": { "raw": "https://objecttwins.onrender.com/analytics_list", "host": ["https://objecttwins.onrender.com"], "path": ["analytics_list"] }
       },
       "event": [
         {
@@ -72,8 +72,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/deploy?activityID={{activityID}}&activityKind={{activityKind}}&s1={{s1}}&s2={{s2}}&s3={{s3}}",
-          "host": ["{{baseUrl}}"],
+          "raw": "https://objecttwins.onrender.com/deploy?activityID={{activityID}}&activityKind={{activityKind}}&s1={{s1}}&s2={{s2}}&s3={{s3}}",
+          "host": ["https://objecttwins.onrender.com"],
           "path": ["deploy"],
           "query": [
             { "key": "activityID", "value": "{{activityID}}" },
@@ -106,7 +106,7 @@
           "mode": "raw",
           "raw": "{\n  \"activityID\": \"{{activityID}}\"\n}"
         },
-        "url": { "raw": "{{baseUrl}}/analytics", "host": ["{{baseUrl}}"], "path": ["analytics"] }
+        "url": { "raw": "https://objecttwins.onrender.com/analytics", "host": ["https://objecttwins.onrender.com"], "path": ["analytics"] }
       },
       "event": [
         {
@@ -126,7 +126,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/analytics?activityID={{activityID}}", "host": ["{{baseUrl}}"], "path": ["analytics"], "query": [{"key":"activityID","value":"{{activityID}}"}] }
+        "url": { "raw": "https://objecttwins.onrender.com/analytics?activityID={{activityID}}", "host": ["https://objecttwins.onrender.com"], "path": ["analytics"], "query": [{"key":"activityID","value":"{{activityID}}"}] }
       },
       "event": [
         {
@@ -143,4 +143,3 @@
     }
   ]
 }
-
