@@ -27,11 +27,11 @@
       ]
     },
     {
-      "name": "JSON Params (json-params)",
+      "name": "JSON Params (json_params_url)",
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/json-params", "host": ["{{baseUrl}}"], "path": ["json-params"] }
+        "url": { "raw": "{{baseUrl}}/json_params", "host": ["{{baseUrl}}"], "path": ["json_params"] }
       },
       "event": [
         {
@@ -47,11 +47,11 @@
       ]
     },
     {
-      "name": "Analytics List (analytics-list)",
+      "name": "Analytics List (analytics_list_url)",
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{baseUrl}}/analytics-list", "host": ["{{baseUrl}}"], "path": ["analytics-list"] }
+        "url": { "raw": "{{baseUrl}}/analytics_list", "host": ["{{baseUrl}}"], "path": ["analytics_list"] }
       },
       "event": [
         {
@@ -143,3 +143,4 @@
     }
   ]
 }
+
