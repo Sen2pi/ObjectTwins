@@ -1,0 +1,53 @@
+@startuml
+title ObjectTwins — Sequência (Factory Method + Singleton)
+
+actor "Inven!RA" as InvenRA
+participant "WebService (server.js)" as WebService
+participant "ActivityFactory" as Factory
+participant "ActivityInstance" as Instance
+participant "«singleton» AnalyticsStore" as Store
+
+== Deploy ==
+InvenRA -> WebService : GET /deploy?activityID=ACT123&activityKind=Modelagem3D
+activate WebService
+WebService -> Factory : createActivityInstance(ACT123, Modelagem3D, config)
+activate Factory
+Factory -> Instance : new ActivityInstance(ACT123, Modelagem3D, templates)
+activate Instance
+Instance --> Factory : instancia criada
+deactivate Instance
+Factory --> WebService : ActivityInstance
+deactivate Factory
+WebService -> Store : getInstance()
+activate Store
+WebService -> Store : registerActivityInstance(instance)
+WebService -> Store : seedStudents(ACT123,[1001,1002])
+Store --> WebService : ok
+deactivate Store
+WebService --> InvenRA : 200 OK
+note right of InvenRA
+URL: /user?activityID=ACT123
+end note
+deactivate WebService
+
+== Analytics ==
+InvenRA -> WebService : POST /analytics { activityID: ACT123 }
+activate WebService
+WebService -> Store : getInstance()
+activate Store
+WebService -> Store : getAnalytics(ACT123)
+Store -> Instance : analyticsForStudent(1001)
+activate Instance
+Instance --> Store : entradas quant/qual (1001)
+deactivate Instance
+Store -> Instance : analyticsForStudent(1002)
+activate Instance
+Instance --> Store : entradas quant/qual (1002)
+deactivate Instance
+Store --> WebService : [ {..1001..}, {..1002..} ]
+deactivate Store
+WebService --> InvenRA : 200 OK JSON
+deactivate WebService
+
+@enduml
+

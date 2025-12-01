@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
+import { createActivityInstance } from "./src/core/factory/ActivityFactory.js";
+import AnalyticsStore from "./src/store/AnalyticsStore.js";
 
 const app = express();
 app.use(cors());
@@ -12,6 +14,7 @@ const analyticsListPath = process.env.ANALYTICS_LIST_PATH || path.join(process.c
 const jsonParamsPath = process.env.JSON_PARAMS_PATH || path.join(process.cwd(), "json_params_url.json");
 
 const activities = new Map();
+const store = AnalyticsStore.getInstance();
 
 app.get("/config", (req, res) => {
   const html = `
@@ -101,7 +104,15 @@ app.get("/deploy", (req, res) => {
     res.status(400).send("Missing activityID");
     return;
   }
-  if (!activities.has(activityID)) activities.set(activityID, { users: new Map() });
+  const type = String(req.query.activityKind || "Modelagem3D");
+  const config = {
+    gravity: req.query.gravity ?? 9.8,
+    friction_coefficient: req.query.friction_coefficient ?? 0.3,
+    time_scale: req.query.time_scale ?? 1.0
+  };
+  const instance = createActivityInstance(activityID, type, config);
+  store.registerActivityInstance(instance);
+  store.seedStudents(activityID, [1001, 1002]);
   const base = `${req.protocol}://${req.get("host")}`;
   const userUrl = `${base}/user?activityID=${encodeURIComponent(activityID)}`;
   res.type("text/plain").send(userUrl);
@@ -120,33 +131,8 @@ app.post("/analytics", (req, res) => {
     res.status(400).json({ error: "Missing activityID" });
     return;
   }
-  const sample = [
-    {
-      inveniraStdID: 1001,
-      quantAnalytics: [
-        { name: "Acedeu à atividade", value: true },
-        { name: "Download documento 1", value: true },
-        { name: "Evolução pela atividade (%)", value: "33.3" }
-      ],
-      qualAnalytics: [
-        { "Student activity profile": `${req.protocol}://${req.get("host")}/analytics/page?APAnID=11111111` },
-        { "Actitivy Heat Map": `${req.protocol}://${req.get("host")}/analytics/page?APAnID=21111111` }
-      ]
-    },
-    {
-      inveniraStdID: 1002,
-      quantAnalytics: [
-        { name: "Acedeu à atividade", value: true },
-        { name: "Download documento 1", value: false },
-        { name: "Evolução pela atividade (%)", value: "10.0" }
-      ],
-      qualAnalytics: [
-        { "Student activity profile": `${req.protocol}://${req.get("host")}/analytics/page?APAnID=11111112` },
-        { "Actitivy Heat Map": `${req.protocol}://${req.get("host")}/analytics/page?APAnID=21111112` }
-      ]
-    }
-  ];
-  res.json(sample);
+  const list = store.getAnalytics(String(activityID));
+  res.json(list);
 });
 
 app.get("/analytics-list", (req, res) => {
