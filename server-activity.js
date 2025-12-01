@@ -8,7 +8,7 @@ import AnalyticsStore from './src/store/AnalyticsStore.js'
 const store = AnalyticsStore.getInstance()
 
 const send = (res, status, body, headers) => {
-  res.writeHead(status, Object.assign({ 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' }, headers || {}))
+  res.writeHead(status, Object.assign({ 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' }, headers || {}))
   res.end(body)
 }
 
@@ -66,6 +66,7 @@ const routes = {
     send(res, 200, base)
   },
   '/analytics': async (req, res) => {
+    console.log('analytics request', req.method, req.url)
     if (req.method === 'GET') {
       const q = url.parse(req.url, true).query
       const activityID = String(q.activityID || '')
@@ -76,19 +77,24 @@ const routes = {
     let body = ''
     req.on('data', chunk => { body += chunk })
     req.on('end', () => {
-      try {
-        let data = {}
-        try { data = JSON.parse(body || '{}') } catch (_) {
+      const ct = String(req.headers['content-type'] || '').toLowerCase()
+      let data = {}
+      if (ct.includes('application/json')) {
+        try { data = JSON.parse(body || '{}') } catch { data = {} }
+      } else if (ct.includes('application/x-www-form-urlencoded')) {
+        const params = new URLSearchParams(body || '')
+        data = Object.fromEntries(params.entries())
+      } else {
+        try { data = JSON.parse(body || '{}') } catch {
           const params = new URLSearchParams(body || '')
           data = Object.fromEntries(params.entries())
         }
-        const activityID = String(data.activityID || '')
-        if (!activityID) return sendJSON(res, 400, { error: 'Missing activityID' })
-        const analytics = store.getAnalytics(activityID)
-        sendJSON(res, 200, analytics)
-      } catch (e) {
-        sendJSON(res, 400, { error: 'Invalid JSON' })
       }
+      const q = url.parse(req.url, true).query
+      const activityID = String(data.activityID || q.activityID || '')
+      if (!activityID) return sendJSON(res, 400, { error: 'Missing activityID' })
+      const analytics = store.getAnalytics(activityID)
+      sendJSON(res, 200, analytics)
     })
   },
   '/user': (req, res) => {

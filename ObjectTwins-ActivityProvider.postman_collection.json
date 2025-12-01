@@ -1,0 +1,145 @@
+{
+  "info": {
+    "name": "ObjectTwins Activity Provider",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "e8a8f2b9-6c9f-4f64-9c1f-collection"
+  },
+  "item": [
+    {
+      "name": "Config Page (config_url)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/config", "host": ["{{baseUrl}}"], "path": ["config"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Is HTML', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('text/html') })",
+              "pm.test('Has named fields', function () { pm.expect(pm.response.text()).to.include('name=\"activityKind\"') })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "JSON Params (json-params)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/json-params", "host": ["{{baseUrl}}"], "path": ["json-params"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Is JSON array', function () { pm.response.to.be.json; const arr = pm.response.json(); pm.expect(Array.isArray(arr)).to.be.true })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics List (analytics-list)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/analytics-list", "host": ["{{baseUrl}}"], "path": ["analytics-list"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Is JSON array', function () { pm.response.to.be.json; const arr = pm.response.json(); pm.expect(Array.isArray(arr)).to.be.true })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deploy Activity (user_url)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/deploy?activityID={{activityID}}&activityKind={{activityKind}}&s1={{s1}}&s2={{s2}}&s3={{s3}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["deploy"],
+          "query": [
+            { "key": "activityID", "value": "{{activityID}}" },
+            { "key": "activityKind", "value": "{{activityKind}}" },
+            { "key": "s1", "value": "{{s1}}" },
+            { "key": "s2", "value": "{{s2}}" },
+            { "key": "s3", "value": "{{s3}}" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Returns user URL', function () { pm.expect(pm.response.text()).to.include('/user?activityID=') })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics (POST)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"activityID\": \"{{activityID}}\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/analytics", "host": ["{{baseUrl}}"], "path": ["analytics"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Is JSON array with analytics', function () { pm.response.to.be.json; const arr = pm.response.json(); pm.expect(Array.isArray(arr)).to.be.true; pm.expect(arr[0]).to.have.property('quantAnalytics'); pm.expect(arr[0]).to.have.property('qualAnalytics') })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/analytics?activityID={{activityID}}", "host": ["{{baseUrl}}"], "path": ["analytics"], "query": [{"key":"activityID","value":"{{activityID}}"}] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200) })",
+              "pm.test('Is JSON array with analytics', function () { pm.response.to.be.json; const arr = pm.response.json(); pm.expect(Array.isArray(arr)).to.be.true; pm.expect(arr[0]).to.have.property('quantAnalytics'); pm.expect(arr[0]).to.have.property('qualAnalytics') })"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
