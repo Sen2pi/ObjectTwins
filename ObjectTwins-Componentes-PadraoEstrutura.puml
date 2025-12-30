@@ -1,0 +1,86 @@
+@startuml
+skinparam componentStyle uml2
+skinparam defaultTextAlignment center
+skinparam shadowing false
+skinparam nodesep 35
+skinparam ranksep 70
+skinparam linetype ortho
+left to right direction
+title ObjectTwins — Diagrama de Componentes (Padrões de Estrutura - Decorator)
+
+component "Inven!RA" as InvenRA #FFD54F {
+  interface IConfiguraçãoAtividade
+  interface IParâmetrosConfig
+  interface IAnalyticsDisponíveis
+  interface IAnalyticsInstância
+}
+
+component "«subsystem» ObjectTwins Activity Provider" as AP #E8F1FF {
+  port PortoConfig
+  port PortoParams
+  port PortoDeploy
+  port PortoUser
+  port PortoAnalytics
+  port PortoAnalyticsList
+
+  component "WebService (Express)" as WebService #90CAF9 {
+    interface IHTTPConfig
+    interface IHTTPParams
+    interface IHTTPDeploy
+    interface IHTTPUser
+    interface IHTTPAnalytics
+    interface IHTTPAnalyticsList
+  }
+
+  component "ActivityFactory" as ActivityFactory #FFCC80 {
+    interface ICreateActivityInstance
+  }
+
+  component "ActivityInstance" as ActivityInstance #FFCC80 {
+    interface IAnalyticsForStudent
+  }
+
+  package "Structure Pattern (Decorator)" as PkgDecorator {
+      component "ActivityDecorator" as ActivityDecorator #CE93D8
+      component "CollisionDecorator" as CollisionDecorator #CE93D8
+  }
+
+  component "«singleton» AnalyticsStore" as AnalyticsStore #A5D6A7 {
+    port PortoStore
+    interface IRegisterInstance
+    interface IGetAnalytics
+  }
+}
+
+InvenRA --> PortoConfig : GET config_url
+InvenRA --> PortoParams : GET json_params_url
+InvenRA --> PortoDeploy : GET user_url
+InvenRA --> PortoAnalytics : POST analytics_url
+InvenRA --> PortoAnalyticsList : GET analytics_list_url
+
+PortoConfig --> WebService : IHTTPConfig
+PortoParams --> WebService : IHTTPParams
+PortoDeploy --> WebService : IHTTPDeploy
+PortoUser --> WebService : IHTTPUser
+PortoAnalytics --> WebService : IHTTPAnalytics
+PortoAnalyticsList --> WebService : IHTTPAnalyticsList
+
+WebService ..> ActivityFactory : ICreateActivityInstance
+WebService ..> AnalyticsStore : IRegisterInstance
+WebService ..> AnalyticsStore : IGetAnalytics
+AnalyticsStore ..> ActivityInstance : IAnalyticsForStudent (Base)
+AnalyticsStore ..> ActivityDecorator : IAnalyticsForStudent (Decorated)
+
+ActivityFactory ..> ActivityInstance : Creates
+ActivityFactory ..> CollisionDecorator : Wraps
+CollisionDecorator --|> ActivityDecorator
+ActivityDecorator o-- ActivityInstance : decorates
+
+note right of PkgDecorator
+  **Decorator Pattern**
+  Adiciona dinamicamente
+  métricas de colisão
+  sem alterar ActivityInstance
+end note
+
+@enduml

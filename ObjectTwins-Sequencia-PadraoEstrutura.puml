@@ -1,0 +1,37 @@
+@startuml
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+skinparam shadowing false
+skinparam maxMessageSize 200
+
+title ObjectTwins — Diagrama de Sequência (Decorator Pattern)
+
+participant "AnalyticsStore" as Store
+participant "CollisionDecorator" as Decorator
+participant "ActivityInstance" as Instance
+
+note over Decorator
+  O Decorator envolve a instância
+  original quando record_collision_events=true
+end note
+
+Store -> Decorator : analyticsForStudent(studentID)
+activate Decorator
+
+    Decorator -> Instance : analyticsForStudent(studentID)
+    activate Instance
+    
+    Instance --> Decorator : { quantAnalytics: [...], qualAnalytics: [...] }
+    deactivate Instance
+
+    note right of Decorator
+      **Pós-processamento**
+      Adiciona a métrica
+      "total_collision_events_registered"
+      à lista quantAnalytics
+    end note
+
+Decorator --> Store : { quantAnalytics: [..., Total Collisions], ... }
+deactivate Decorator
+
+@enduml

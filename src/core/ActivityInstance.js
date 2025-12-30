@@ -8,8 +8,15 @@ export default class ActivityInstance {
 
   analyticsForStudent(inveniraStdID) {
     const quantAnalytics = this.analyticsTemplates.quant.map(a => ({ name: a.name, value: a.initial }))
-    const qualAnalytics = this.analyticsTemplates.qual.map(a => ({ [a.name]: a.urlTemplate.replace('{APAnID}', `${this.activityID}:${inveniraStdID}`) }))
+    
+    const qualAnalytics = this.analyticsTemplates.qual.map(a => {
+      if (a.urlTemplate) {
+        return { [a.name]: a.urlTemplate.replace('{APAnID}', `${this.activityID}:${inveniraStdID}`) }
+      }
+      // If no urlTemplate, return the initial value or null
+      return { [a.name]: a.initial || null }
+    })
+    
     return { inveniraStdID, quantAnalytics, qualAnalytics }
   }
 }
-

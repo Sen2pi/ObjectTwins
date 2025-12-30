@@ -108,7 +108,8 @@ app.get("/deploy", (req, res) => {
   const config = {
     gravity: req.query.gravity ?? 9.8,
     friction_coefficient: req.query.friction_coefficient ?? 0.3,
-    time_scale: req.query.time_scale ?? 1.0
+    time_scale: req.query.time_scale ?? 1.0,
+    record_collision_events: req.query.record_collision_events === 'true' || req.query.record_collision_events === 'on'
   };
   const instance = createActivityInstance(activityID, type, config);
   store.registerActivityInstance(instance);
